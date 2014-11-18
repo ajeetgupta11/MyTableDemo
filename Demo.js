@@ -16,6 +16,10 @@ app.factory('CommonFactory', function() {
 
 // To define a controller
 app.controller('TestCtrl', function($scope, CommonFactory) {
+    $scope.user = {};
+    $scope.showEdit = false;
+    $scope.showAdd = true;
+    $scope.showSave =false;
     $scope.model = {
         employee:  CommonFactory,
         selected: {}
@@ -27,7 +31,7 @@ app.controller('TestCtrl', function($scope, CommonFactory) {
     console.log("I have data comes from factory");
 
     $scope.getMyTemplate = function (contact) {
-        if (contact.Name === $scope.model.selected.Name) return 'edit';
+        if (contact.Name === $scope.model.selected.Name || contact.Name === "") return 'edit';
         else return 'display';
     };
 
@@ -41,6 +45,24 @@ app.controller('TestCtrl', function($scope, CommonFactory) {
         $scope.resetAll();
     };
 
+    $scope.SaveRow = function () {
+        if (Object.getOwnPropertyNames($scope.user).length > 0){
+            $scope.model.employee.push({Name:$scope.user.name,Location:$scope.user.location, DateOfBirth:$scope.user.dob,DateOfJoining: $scope.user.doj});
+            $scope.showEdit = false;
+            $scope.showAdd = true;
+            $scope.showSave =false;
+        } else {
+            alert("First enter some value");
+        }
+    }
+    $scope.showEditOption = function() {
+        $scope.showEdit = true;
+        $scope.showAdd = false;
+        $scope.showSave =true;
+    }
+
+
+
     $scope.resetAll = function () {
         $scope.model.selected = {};
     };
@@ -50,7 +72,4 @@ app.controller('TestCtrl', function($scope, CommonFactory) {
         $scope.model.employee.splice(index, 1);
     }
 
-
 });
-
-
